@@ -12,10 +12,24 @@ Jest to struktura, która przechowuje informacje o jednej windzie. Posiada ona p
  * ID - numer identyfikacyjny windy,
  * floor - numer piętra, na którym znajduje się winda; piętra numeruje się od zera,
  * dest_floor - tablica zmiennych typu bool; wartość 'true' oznacza, że piętro o danym indeksie znajduje się na liście żądań windy,
+ * direction - wartość całkowita określająca kierunek poruszania się windy (dodatnia - w górę, ujemna - w dół, zero - winda stoi w miejscu)
+ * change_direction_soon - wartość całkowita określająca czy, i w jaką stronę oczekuje się, że winda zmieni kierunek poruszania się (dodatnia - w górę, ujemna - w dół, zero - nie oczekuje się, że winda zmieni kierunek)
+ * stop_and_open - zmienna typu bool; wartość 'true' oznacza, że winda stoi z otwartymi drzwiami na danym piętrze (Nie oznacza to, że direction ma wartość zero. Winda jest w tym stanie tylko chwilowo)
+## Pliki
+Program składa się z pliku głównego _main.c_ oraz pliku _ElevatorSystem.c_ z implementacją funkcji pozwalających zarządzać windą i jego pliku nagłówkowego _ElevatorSystem.h_
 ## Instrukcja użytkownika
 Po uruchomieniu programu otwiera się konsola, w której można wywoływać funkcje określające działanie windy. Poprzez wpisywanie odpowiednich poleceń odpowiednie funkcje są wywoływane. Na ekranie wświetla się informacja o dostępnych opcjach.
-### Dostępne funkcje dla użytkownika
-#### Elevator_Clear_Demands(int ID) - komenda 'clear'
-Czyści listę żądań windy o podanym ID
-#### Elevator_Change_Status(int ID, int new_IP, int floor, 
-
+### Funkcje dostępne dla użytkownika
+#### Funkcje zarządzające
+* Elevator_Clear_Demands(int ID) - (komenda 'clear') czyści listę żądań windy o podanym ID.
+* Elevator_Change_Status(int ID, int new_ID, int floor, int direction, bool stop_and_open) - (komenda 'change') ustawia część parametrów windy.
+* print_status() - (komenda 'status') wyświetla informacje o stanie wszysktich wind zwracaną przez funkcję Elevator_Status().
+#### Funkcje odzwierciedlające normalną pracę windy
+* Elevator_Pickup(int floor, int direction) - (komenda 'pickup') ekwiwalent wciśnięcia przycisku o kierunku zgodnym ze znakiem _direction_ na piętrze o numerze _floor_. Funkcja ta przyjmuje żądanie i przydziela je odpowiedniej windzie.
+* Elevator_Demand(int ID, int dest_floor) - (komenda 'demand') ekwiwalent wciśnięcia przycisku o numerze _dest_floor_ w windzie o podanym ID. Funkcja ta dodatkowo zamyka drzwi windy jeżeli są otwarte.
+* Elevator_Step() - (komenda 'step') symulacja upływu czasu. Jeżeli drzwi windy są otwarte to funkcja ta je zamyka. Jeżeli drzwi są zamknięte to funkcja przemieszcza wszystkie windy będące w ruchu o jedno piętro. Można wywołać ją dowolną ilość razy.
+## Dodatkowe funkcje i własności 
+W pliku nagłówkowym _ElevatorSystem.h_ zdefiniowane są makra:
+ * ELEV_NB - określa liczbę wind w budynku. Obecnie ustawione jest na 16, ale można je zmieniać, z zachowaniem rozsądku, w dowolny sposób.
+ * FLOOR_NB - określa liczbę pięter. Również można zmieniać w dowolny sposób.
+ 
