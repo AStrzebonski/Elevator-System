@@ -33,7 +33,7 @@ void change_status()
     scanf("%s", str);
     fflush(stdin);
     int direction=atoi(str);
-    printf("type 'open' to open the elevator's door.\n");
+    printf("Type 'open' to open the elevator's door or anything else to close it.\n");
     scanf("%s", str);
     fflush(stdin);
     bool open=false;

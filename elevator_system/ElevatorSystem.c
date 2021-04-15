@@ -94,7 +94,7 @@ int* Longest_Path(int current_floor, int demanded_floor, int current_direction, 
             ret[0] = 0;
             return ret;
         }
-        if(current_direction==demanded_direction)
+        if( (current_direction>0) == (demanded_direction>0) )
         {
             ret[0] = 0;
             return ret;
