@@ -18,7 +18,7 @@ Jest to struktura, która przechowuje informacje o jednej windzie. Posiada ona p
 ## Pliki
 Program składa się z pliku głównego _main.c_ oraz pliku _ElevatorSystem.c_ z implementacją funkcji pozwalających zarządzać windą i jego pliku nagłówkowego _ElevatorSystem.h_
 ## Instrukcja użytkownika
-Po uruchomieniu programu otwiera się konsola, w której można wywoływać funkcje określające działanie windy. Poprzez wpisywanie odpowiednich poleceń odpowiednie funkcje są wywoływane. Na ekranie wświetla się informacja o dostępnych opcjach.
+Po skompilowaniu kodu i uruchomieniu programu, otwiera się konsola, w której można wywoływać funkcje określające działanie windy. Poprzez wpisywanie odpowiednich poleceń, odpowiednie funkcje są wywoływane. Na ekranie wświetla się informacja o dostępnych opcjach i jak ich użyć. Funkcje są zabezpieczone od wywołania z niepożądanymi wartościami z poziomu pliku _ElevatorSystem.c_. Należy jednak pamiętać, że do konwersji danych przesyłanych przez użytkownika na zmienną typu integer została użyta funkcja atoi(), co oznacza, że wpisanie nie-integera poskutkuje konwersją na 0 i to 0 będzie przekazane do funkcji.
 ### Funkcje dostępne dla użytkownika
 #### Funkcje zarządzające
 * Elevator_Clear_Demands(int ID) - (komenda 'clear') czyści listę żądań windy o podanym ID.
@@ -32,4 +32,8 @@ Po uruchomieniu programu otwiera się konsola, w której można wywoływać funk
 W pliku nagłówkowym _ElevatorSystem.h_ zdefiniowane są makra:
  * ELEV_NB - określa liczbę wind w budynku. Obecnie ustawione jest na 16, ale można je zmieniać, z zachowaniem rozsądku, w dowolny sposób.
  * FLOOR_NB - określa liczbę pięter. Również można zmieniać w dowolny sposób.
- 
+ ### Istotne funkcje używane w programie
+ * Longest_Path(int current_floor, int demanded_floor, int current_direction, int demanded_direction) - określa najdłuższą możliwą drogę windy do wezwania oraz czy winda będzie musiała zmienić kierunek po przybyciu do wezwania lub w trakcie drogi do wezwania.
+ * Refresh() - odświeża stan windy, w szczególności, wykreśla obsłużone piętra z listy żądań, otwiera drzwi, zmienia kierunek poruszania się windy.
+ ## Komentarz
+ Problem jest dosyć złożony i z pewnością dałoby się stworzyć bardziej zaawansowany i lepszy algorytm. Algorytm wymyśliłem sam, nie chciałem posiłkować się gotowymi rozwiązaniami. Program dałoby się przenieść na platformę embedded. Oczywiście należałoby zmienić sposób wywołania funkcji z pliku ElevatorSystem.c oraz dopisać coś co przekazywałoby zmiany w strukturze _Elevator_ do układów peryferyjnych.
