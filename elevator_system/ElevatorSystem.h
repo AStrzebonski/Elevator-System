@@ -8,7 +8,9 @@
 typedef struct  {
     int ID;
     int floor; //elevator is either waiting at this floor or just passing it
-    bool dest_floor[FLOOR_NB]; //'true' indicates that elevator is yet to stop at this floor
+    bool dest_floor_up[FLOOR_NB]; //'true' indicates that elevator is yet to stop at this floor
+    bool dest_floor_down[FLOOR_NB];
+    bool dest_floor_in[FLOOR_NB]; //demand inside elevator
     int direction; //positive->up, negative->down, zero->elevator is not going anywhere, it has all 'false' values in dest_floor
     int change_direction_soon; //positive->up, negative->down, probably elevator will change its direction soon
     bool stop_and_open; //elevator stops at current floor and open its door (as a contrast to when elevator just passes some floor

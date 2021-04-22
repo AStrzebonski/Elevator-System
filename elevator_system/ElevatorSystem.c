@@ -13,7 +13,9 @@ void Elevator_Init()
         elev_array[i].stop_and_open = false;
         for(int j=0; j<FLOOR_NB; j++)
         {
-            elev_array[i].dest_floor[j] = false;
+            elev_array[i].dest_floor_up[j] = false;
+            elev_array[i].dest_floor_down[j] = false;
+            elev_array[i].dest_floor_in[j] = false;
         }
     }
 }
@@ -30,7 +32,9 @@ bool Elevator_Clear_Demands(int ID)
             elev_array[i].change_direction_soon = 0;
             for(int j=0; j<FLOOR_NB; j++)
             {
-                elev_array[i].dest_floor[j] = false;
+                elev_array[i].dest_floor_up[j] = false;
+                elev_array[i].dest_floor_down[j] = false;
+                elev_array[i].dest_floor_in[j] = false;
             }
             return true;
         }
@@ -164,18 +168,30 @@ void Refresh() //refreshes states of elevators
 {
     for(int i=0; i<ELEV_NB; i++)
     {
-        if(elev_array[i].dest_floor[elev_array[i].floor] == true) //elevator is on one of destined floors
+        if(elev_array[i].dest_floor_up[elev_array[i].floor] && (elev_array[i].direction > 0) ) //elevator is on one of destined floors
         {
             elev_array[i].stop_and_open = true;
-            elev_array[i].dest_floor[elev_array[i].floor] = false; //demand serviced
+            elev_array[i].dest_floor_up[elev_array[i].floor] = false; //demand serviced
             continue; //it is expected that someone will click button in elevator now so we don't change direction yet
+        }
+        if(elev_array[i].dest_floor_down[elev_array[i].floor] && (elev_array[i].direction < 0) ) //elevator is on one of destined floors
+        {
+            elev_array[i].stop_and_open = true;
+            elev_array[i].dest_floor_down[elev_array[i].floor] = false; //demand serviced
+            continue; //it is expected that someone will click button in elevator now so we don't change direction yet
+        }
+        if(elev_array[i].dest_floor_in[elev_array[i].floor])
+        {
+            elev_array[i].stop_and_open = true;
+            elev_array[i].dest_floor_in[elev_array[i].floor] = false;
+            continue;
         }
         if(elev_array[i].stop_and_open == true)
             continue; //do not change direction when door are open
         int new_direction=0;
         for(int j=0; j<FLOOR_NB; j++)
         {
-            if(elev_array[i].dest_floor[j]==true)
+            if(elev_array[i].dest_floor_down[j] || elev_array[i].dest_floor_up[j] || elev_array[i].dest_floor_in[j])
             {
                 if(elev_array[i].direction==0) //elevator was not moving
                 {
@@ -238,7 +254,10 @@ bool Elevator_Pickup(int floor, int direction)
             new_change_direction_soon = *(new_longest_possible_path + 1);
         }
     }
-    elev_array[best_elev_iter].dest_floor[floor] = true;
+    if(direction>0)
+        elev_array[best_elev_iter].dest_floor_up[floor] = true;
+    if(direction<0)
+        elev_array[best_elev_iter].dest_floor_down[floor] = true;
     elev_array[best_elev_iter].change_direction_soon = new_change_direction_soon;
     Refresh();
     return true;
@@ -253,7 +272,7 @@ bool Elevator_Demand(int ID, int dest_floor)
     {
         if(elev_array[i].ID == ID)
         {
-            elev_array[i].dest_floor[dest_floor] = true;
+            elev_array[i].dest_floor_in[dest_floor] = true;
             elev_array[i].stop_and_open = false; //close the door
             if(elev_array[i].direction>0 && dest_floor<elev_array[i].floor)
                 elev_array[i].change_direction_soon = -1;
