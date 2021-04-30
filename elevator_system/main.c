@@ -67,7 +67,7 @@ void print_status()
         printf("Destination floor numbers: ");
         for(int j=0; j<FLOOR_NB; j++)
         {
-            if(elev_array_[i].dest_floor_down[j] || elev_array_[i].dest_floor_down[j] || elev_array_[i].dest_floor_down[j]) //print dest floor no matter what direction
+            if(elev_array_[i].dest_floor[j] == true)
                 printf("%d, ", j);
         }
         printf("\n");
